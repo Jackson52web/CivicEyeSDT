@@ -49,7 +49,7 @@ const CivicIssueApp = () => {
   };
 
   const handleAddComment = (issueId, commentText) => {
-    const newComment = addCommentToIssue(issueId, commentText);
+    const newComment = addCommentToIssue(issueId, commentText, "Citizen");
     
     if (newComment) {
       // Refresh the issues list

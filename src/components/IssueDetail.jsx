@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { format } from 'date-fns';
 import StatusBadge from './StatusBadge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ThumbsUp, MapPin, MessageSquare, Calendar, X, Send } from 'lucide-react';
+import { ThumbsUp, MapPin, MessageSquare, Calendar, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -90,7 +90,9 @@ const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
                     {issue.comments.map((comment) => (
                       <div key={comment.id} className="text-sm">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="font-medium">{comment.user}</span>
+                          <span className={`font-medium ${comment.user === 'Admin' ? 'text-blue-600' : ''}`}>
+                            {comment.user}
+                          </span>
                           <span className="text-xs text-gray-500">
                             {format(new Date(comment.createdAt), 'PP')}
                           </span>
@@ -106,7 +108,7 @@ const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
 
               <form onSubmit={handleAddComment} className="flex gap-2 mt-3">
                 <Input
-                  placeholder="Add a comment..."
+                  placeholder="Add a comment as citizen..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   className="flex-1"

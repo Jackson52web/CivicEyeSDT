@@ -48,7 +48,7 @@ export const upvoteIssue = (id) => {
   return null;
 };
 
-export const addCommentToIssue = (id, commentText, user = "Anonymous") => {
+export const addCommentToIssue = (id, commentText, user = "Citizen") => {
   const issueIndex = issues.findIndex(issue => issue.id === parseInt(id));
   
   if (issueIndex !== -1) {
