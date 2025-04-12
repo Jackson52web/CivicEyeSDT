@@ -6,7 +6,8 @@ import IssueDetail from './IssueDetail';
 import ReportIssueForm from './ReportIssueForm';
 import { getIssues, addIssue, upvoteIssue, addCommentToIssue } from '../services/issueService';
 import { useToast } from '@/hooks/use-toast';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, ShieldAlert } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CivicIssueApp = () => {
   const [issues, setIssues] = useState([]);
@@ -83,13 +84,21 @@ const CivicIssueApp = () => {
       <header className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Civic Issue Reporter</h1>
-          <Button 
-            onClick={() => setIsReportModalOpen(true)}
-            className="bg-civic-blue hover:bg-blue-700"
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Report Issue
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => setIsReportModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Report Issue
+            </Button>
+            <Link to="/admin">
+              <Button variant="outline" size="icon">
+                <ShieldAlert className="h-4 w-4" />
+                <span className="sr-only">Admin Dashboard</span>
+              </Button>
+            </Link>
+          </div>
         </div>
         <p className="text-gray-600 max-w-2xl">
           Help improve your community by reporting and tracking civic issues like potholes, 
