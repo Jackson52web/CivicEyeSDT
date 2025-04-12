@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import IssueList from './IssueList';
 import IssueDetail from './IssueDetail';
 import ReportIssueForm from './ReportIssueForm';
-import { getIssues, addIssue, upvoteIssue, addCommentToIssue } from '../services/issueService';
+import { getIssues, addIssue, upvoteIssue, addCommentToIssue, getIssueById } from '../services/issueService';
 import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, ShieldAlert } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,9 @@ const CivicIssueApp = () => {
   };
 
   const handleIssueSelect = (issue) => {
-    setSelectedIssue(issue);
+    // Fetch the latest issue data to ensure we have the most up-to-date comments
+    const freshIssue = getIssueById(issue.id);
+    setSelectedIssue(freshIssue);
     setIsDetailOpen(true);
   };
 
@@ -57,7 +59,7 @@ const CivicIssueApp = () => {
       
       // If this is the selected issue, update it
       if (selectedIssue && selectedIssue.id === issueId) {
-        const updatedIssue = getIssues().find(issue => issue.id === issueId);
+        const updatedIssue = getIssueById(issueId);
         setSelectedIssue(updatedIssue);
       }
       

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { format } from 'date-fns';
 import StatusBadge from './StatusBadge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -11,6 +11,8 @@ import { Separator } from '@/components/ui/separator';
 
 const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
   const [comment, setComment] = useState('');
+  const commentInputRef = useRef(null);
+  const commentSectionRef = useRef(null);
 
   if (!issue) return null;
 
@@ -26,10 +28,19 @@ const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
     }
   };
 
+  const scrollToComments = () => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (commentInputRef.current) {
+      commentInputRef.current.focus();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-hidden p-0">
-        <DialogHeader className="p-4 pb-2">
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto p-0">
+        <DialogHeader className="p-4 pb-2 sticky top-0 bg-background z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="text-2xl">{getIssueIcon(issue.type)}</div>
@@ -74,11 +85,20 @@ const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
                 <ThumbsUp size={14} />
                 <span>Upvote ({issue.upvotes})</span>
               </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center gap-1"
+                onClick={scrollToComments}
+              >
+                <MessageSquare size={14} />
+                <span>Comment ({issue.comments.length})</span>
+              </Button>
             </div>
 
             <Separator />
 
-            <div>
+            <div ref={commentSectionRef}>
               <h4 className="font-medium mb-2 flex items-center gap-1">
                 <MessageSquare size={16} />
                 <span>Comments ({issue.comments.length})</span>
@@ -108,6 +128,7 @@ const IssueDetail = ({ issue, open, onClose, onUpvote, onAddComment }) => {
 
               <form onSubmit={handleAddComment} className="flex gap-2 mt-3">
                 <Input
+                  ref={commentInputRef}
                   placeholder="Add a comment as citizen..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
